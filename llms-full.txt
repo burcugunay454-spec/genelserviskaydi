@@ -1,0 +1,71 @@
+# Genel Servis Kaydı
+
+> Genel Servis Kaydı, beyaz eşya (buzdolabı, çamaşır makinesi, bulaşık makinesi, fırın ve ocak), kombi ve klima için servis kaydı alan, adreste arıza tespiti, onarım ve bakım yapan bağımsız bir özel teknik servistir. Hiçbir üretici markanın yetkili servisi, bayisi veya müşteri hizmetleri hattı değildir.
+
+## İletişim
+- Telefon: (telefon numarası yakında eklenecek)
+- Servis kayıt formu: https://genelserviskaydi.net.tr/#kayit (mesaj WhatsApp'ta hazır açılır)
+- Çalışma: Hafta içi ve hafta sonu, randevu ile
+
+## Hizmetler
+- Buzdolabı: Soğutma kaybı, karlanma, su sızıntısı, fan ve termostat arızaları.
+- Çamaşır Makinesi: Su boşaltmama, sıkmama, kapak kilidi, titreşim ve hata uyarıları.
+- Bulaşık Makinesi: Temiz yıkamama, su almama, kurutmama ve pompa arızaları.
+- Fırın ve Ocak: Isınmama, rezistans, termostat, fan ve ocak gözü arızaları.
+- Kombi: Sıcak su sorunu, basınç düşmesi, arıza kodları ve periyodik bakım.
+- Klima: Soğutmama, su damlatma, koku, ses ve mevsimlik bakım.
+
+## Çalışma ilkeleri
+- Ücret, arıza tespitinden sonra ve işlemden önce bildirilir; onay olmadan işlem yapılmaz.
+- Değişen parça açıklanır, çıkan parça istenirse müşteriye bırakılır.
+- İstenirse yazılı servis formu düzenlenir.
+- Garanti kapsamındaki cihazlar için üreticinin yetkili servisine başvurulması önerilir.
+
+## Sayfalar
+- [Ana sayfa](https://genelserviskaydi.net.tr/)
+- [Hakkımızda](https://genelserviskaydi.net.tr/hakkimizda.html)
+- [İletişim](https://genelserviskaydi.net.tr/iletisim.html)
+- [Hizmet Koşulları](https://genelserviskaydi.net.tr/hizmet-kosullari.html)
+- [Gizlilik ve KVKK](https://genelserviskaydi.net.tr/gizlilik.html)
+- [Çerez Politikası](https://genelserviskaydi.net.tr/cerez-politikasi.html)
+
+## Sık sorulan sorular
+### Servis kaydı nasıl oluşturulur?
+Telefonla arayabilir, WhatsApp'tan yazabilir ya da sayfadaki formu doldurabilirsiniz. Form mesajınızı WhatsApp'ta hazır açar, siz yalnızca gönderirsiniz.
+
+### Hangi cihazlara bakıyorsunuz?
+Buzdolabı, çamaşır makinesi, bulaşık makinesi, fırın ve ocak gibi beyaz eşyalar ile kombi ve klimalara arıza, bakım ve onarım hizmeti veriyoruz.
+
+### Ücreti ne zaman öğrenirim?
+Arıza tespitinden sonra, işleme başlamadan önce. Onay vermezseniz işlem yapılmaz.
+
+### Hafta sonu randevu veriyor musunuz?
+Evet, hafta içi ve hafta sonu randevu ile adreste servis veriyoruz.
+
+### Kişisel bilgilerim nasıl kullanılıyor?
+Paylaştığınız ad, telefon ve adres yalnızca servis kaydınız için kullanılır. Ayrıntılar Gizlilik ve KVKK sayfamızdadır.
+
+## Arıza rehberi
+### Buzdolabı soğutmuyor
+Kapağın tam kapandığını ve arkada hava boşluğu olduğunu kontrol edin. Düzelmezse kapağı az açın ve servis kaydı oluşturun.
+
+### Çamaşır makinesi su boşaltmıyor
+Programı durdurun, kapağı zorlamayın. Pompa filtresi tıkanmış olabilir; emin değilseniz müdahale etmeyin.
+
+### Bulaşık makinesi temiz yıkamıyor
+Alt filtreyi ve pervane deliklerini kontrol edin. Sorun sürüyorsa su alma veya ısıtma kaynaklı olabilir.
+
+### Kombi basıncı düşüyor
+Basıncı kılavuzdaki değere getirin. Sık tekrar ediyorsa kaçak olabilir; teknik kontrol gerekir.
+
+### Klimadan su damlıyor
+Cihazı kapatıp prizden çekin. Tahliye hattı tıkanmış veya filtre kirlenmiş olabilir.
+
+### Fırın ısınmıyor
+Sigortayı ve ayarı kontrol edin. Rezistans veya termostat arızasında elektrikli parçalara dokunmayın.
+
+## Servis süreci
+1. Kaydınızı oluşturun: Arayın, WhatsApp'tan yazın ya da formu doldurun.
+2. Randevu belirlenir: Uygun gün ve saat sizinle birlikte planlanır.
+3. Adreste tespit ve ücret: Arıza açıklanır, ücret işlemden önce söylenir.
+4. Onarım ve test: Onayınızla onarılır, çalışır halde teslim edilir.

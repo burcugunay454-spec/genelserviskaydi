@@ -168,7 +168,7 @@ def alt():
 <p>Beyaz eşya, kombi ve klima için servis kaydı, adreste arıza tespiti, onarım ve bakım.</p></div>
 <div><h3>Hizmetler</h3><ul>{hizmet}</ul></div>
 <div><h3>İletişim</h3><ul class="ik-liste">{"".join(li)}</ul></div>
-<div><h3>Kurumsal</h3><ul><li><a href="./#kurumsal">Kurumsal yapı</a></li><li><a href="./#surec">Servis kaydı süreci</a></li><li><a href="./#sss">Sık sorulanlar</a></li><li><a href="gizlilik.html">Gizlilik ve KVKK</a></li></ul></div>
+<div><h3>Kurumsal</h3><ul><li><a href="./#kurumsal">Kurumsal yapı</a></li><li><a href="./#surec">Servis kaydı süreci</a></li><li><a href="hakkimizda.html">Hakkımızda</a></li><li><a href="iletisim.html">İletişim</a></li><li><a href="./#sss">Sık sorulanlar</a></li><li><a href="hizmet-kosullari.html">Hizmet koşulları</a></li><li><a href="gizlilik.html">Gizlilik ve KVKK</a></li><li><a href="cerez-politikasi.html">Çerez politikası</a></li></ul></div>
 <p class="yasal">{e(C.FIRMA)}{unvan} bağımsız bir özel teknik servistir; hiçbir üretici markanın yetkili servisi, bayisi veya müşteri hizmetleri hattı değildir.
 Marka garantisi kapsamındaki cihazlarınız için üreticinin yetkili servisine başvurabilirsiniz. © <span id="yil">2026</span> {e(C.FIRMA)}</p>
 </div>
@@ -227,7 +227,7 @@ def ana_sayfa():
     robots = "index,follow,max-image-preview:large" if YAYINDA else "noindex,nofollow"
 
     ara = f'<a class="btn btn-ara" href="{TEL_HREF}" data-olay="arama_tiklama" data-konum="hero">{ik("tel")}<span>Hemen Ara</span></a>'
-    hero_gorsel = resim("hero", "Teknisyen kapıda karşılanıyor, servis kaydı için adrese geldi", "100vw", oncelik=True)
+    hero_gorsel = resim("hero", "Teknisyen evde bulaşık makinesini onarırken, anne ve kızı mutfakta izliyor", "100vw", oncelik=True)
     kurumsal_gorsel = resim("kurumsal", "Servis kayıt biriminde talep kaydeden çalışan", "(max-width:900px) 92vw, 520px") or yer_tutucu("belge", "Servis kayıt birimi")
 
     yapi = "".join(f'<li><span class="y-no">{i:02d}</span><div><h3>{ik(k)}{e(b)}</h3><p>{e(m)}</p></div></li>' for i, (k, b, m) in enumerate(C.YAPI, 1))
@@ -342,6 +342,114 @@ def gizlilik():
 </article></main>''' + alt() + yapiskan() + js() + "\n</body></html>\n"
 
 
+YASAL = [("hakkimizda.html", "Hakkımızda"), ("iletisim.html", "İletişim"), ("hizmet-kosullari.html", "Hizmet Koşulları"),
+         ("gizlilik.html", "Gizlilik ve KVKK"), ("cerez-politikasi.html", "Çerez Politikası")]
+
+
+def sayfa(yol, baslik, aciklama, govde):
+    return bas(f"{baslik} | {C.FIRMA}", aciklama, yol, "index,follow" if YAYINDA else "noindex,nofollow") + ust(False) + f"""
+<main class="kap dar"><article class="metin">
+<h1>{e(baslik)}</h1>
+{govde}
+<p><a class="btn btn-cizgi btn-kucuk" href="./">← Ana sayfaya dön</a></p>
+</article></main>""" + alt() + yapiskan() + js() + "\n</body></html>\n"
+
+
+def kim():
+    return e(C.FIRMA) + (f" ({e(C.UNVAN)})" if C.UNVAN else "")
+
+
+def hakkimizda():
+    yapi = "".join(f"<li><b>{e(b)}:</b> {e(m)}</li>" for _, b, m in C.YAPI)
+    cihaz = ", ".join(b.lower() for _, b, _, _ in C.CIHAZLAR)
+    ilke = "".join(f"<h2>{e(b)}</h2><p>{e(m)}</p>" for _, b, m in C.ILKELER)
+    return sayfa("hakkimizda.html", "Hakkımızda", "Genel Servis Kaydı kimdir, nasıl çalışır: bağımsız özel teknik servis, kayıtlı ve şeffaf servis süreci.", f"""
+<p>{kim()}, beyaz eşya, kombi ve klima için adreste arıza tespiti, onarım ve bakım hizmeti veren <b>bağımsız bir özel teknik servistir</b>.
+Hiçbir üretici markanın yetkili servisi, bayisi veya müşteri hizmetleri hattı değildir; sitemizde marka adı veya logosu kullanılmaz.</p>
+<h2>Hangi cihazlara bakıyoruz?</h2><p>{e(cihaz)}.</p>
+<h2>Servis kaydı nasıl işler?</h2><ul>{yapi}</ul>
+{ilke}
+<h2>Garanti kapsamındaki cihazlar</h2><p>Cihazınız üretici garantisi kapsamındaysa, garantinin geçerliliğini korumak için önce üreticinin yetkili servisine başvurmanızı öneririz.</p>""")
+
+
+def iletisim():
+    satir = [f'<li><b>Telefon:</b> <a href="{TEL_HREF}" data-olay="arama_tiklama" data-konum="iletisim-sayfa">{e(TEL_GOSTER)}</a></li>']
+    if WA_NO:
+        satir.append(f'<li><b>WhatsApp:</b> <a href="{wa("Merhaba, servis kaydı oluşturmak istiyorum.")}" target="_blank" rel="noopener" data-olay="whatsapp_tiklama" data-konum="iletisim-sayfa">Mesaj gönderin</a></li>')
+    if C.EPOSTA:
+        satir.append(f'<li><b>E-posta:</b> <a href="mailto:{e(C.EPOSTA)}">{e(C.EPOSTA)}</a></li>')
+    if C.UNVAN:
+        satir.append(f"<li><b>Ticari unvan:</b> {e(C.UNVAN)}</li>")
+    if C.ADRES:
+        satir.append(f"<li><b>Adres:</b> {e(C.ADRES)}</li>")
+    satir.append(f"<li><b>Çalışma:</b> {e(C.SAAT)}</li>")
+    return sayfa("iletisim.html", "İletişim", "Servis kaydı oluşturmak için telefon, WhatsApp ve form ile bize ulaşın.", f"""
+<p>Servis kaydı oluşturmak, randevu almak veya mevcut kaydınız hakkında bilgi almak için aşağıdaki kanallardan bize ulaşabilirsiniz.</p>
+<ul>{"".join(satir)}</ul>
+<h2>Servis kayıt formu</h2><p>Ana sayfadaki <a href="./#kayit">servis kayıt formunu</a> doldurduğunuzda mesajınız WhatsApp'ta hazır açılır; siz yalnızca gönderirsiniz.</p>
+<h2>Bilgilendirme</h2><p>{e(C.FIRMA)} bağımsız bir özel teknik servistir; hiçbir markanın yetkili servisi veya müşteri hizmetleri hattı değildir.</p>""")
+
+
+def hizmet_kosullari():
+    return sayfa("hizmet-kosullari.html", "Hizmet Koşulları", "Servis kaydı, ücretlendirme, onay, parça ve iptal koşulları.", f"""
+<p>Bu koşullar, {kim()} tarafından verilen servis hizmetleri ve bu internet sitesinin kullanımı için geçerlidir.</p>
+<h2>1. Hizmetin niteliği</h2><p>{e(C.FIRMA)} bağımsız bir özel teknik servistir. Hiçbir üretici markanın yetkili servisi değildir; verilen hizmet üretici garantisi yerine geçmez.</p>
+<h2>2. Servis kaydı ve randevu</h2><p>Kayıt telefon, WhatsApp veya form ile oluşturulur. Randevu günü ve saati sizinle birlikte belirlenir. Randevuyu değiştirmek veya iptal etmek için bize aynı kanallardan ulaşabilirsiniz.</p>
+<h2>3. Arıza tespiti ve ücret</h2><p>Teknisyen cihazı adreste inceler, arızayı ve yapılacak işlemi açıklar. Ücret işlemden önce bildirilir. <b>Onayınız olmadan işlem yapılmaz.</b> İşlemi kabul etmemeniz durumunda uygulanacak bir tespit ücreti varsa bu, randevu sırasında önceden size söylenir.</p>
+<h2>4. Parça</h2><p>Değişmesi gereken parça ve nedeni size açıklanır. Çıkan parça isterseniz size bırakılır.</p>
+<h2>5. Belge</h2><p>Yapılan işlem ve ödenen ücret için isteğinize göre yazılı servis formu düzenlenir.</p>
+<h2>6. Sitedeki bilgiler</h2><p>Arıza rehberindeki bilgiler genel bilgilendirme amaçlıdır; elektrik, gaz ve su tesisatına ilişkin işlemleri kendiniz yapmayın, cihazın kullanım kılavuzuna uyun.</p>
+<h2>7. Kişisel veriler</h2><p>Kişisel verileriniz <a href="gizlilik.html">Gizlilik ve KVKK Aydınlatma Metni</a> kapsamında işlenir.</p>""")
+
+
+def cerez():
+    return sayfa("cerez-politikasi.html", "Çerez Politikası", "Sitede kullanılan çerezler ve tercihlerinizi nasıl yönetebileceğiniz.", f"""
+<p>Bu sayfa, {kim()} internet sitesinde kullanılan çerezler (cookies) ve benzeri teknolojiler hakkında bilgi verir.</p>
+<h2>Çerez nedir?</h2><p>Çerezler, siteyi ziyaret ettiğinizde tarayıcınıza kaydedilen küçük metin dosyalarıdır.</p>
+<h2>Hangi çerezler kullanılabilir?</h2>
+<ul><li><b>Zorunlu:</b> Sitenin çalışması ve sahte tıklamaların önlenmesi için tarayıcı hafızasına küçük kayıtlar yazılabilir.</li>
+<li><b>Ölçüm ve reklam:</b> Ziyaret istatistikleri ve reklam performansının ölçülmesi için Google Analytics, Google Tag Manager ve Google Ads gibi araçlar kullanılabilir. Bu araçlar anonim cihaz ve ziyaret bilgisi toplayabilir.</li></ul>
+<h2>Tercihlerinizi yönetme</h2><p>Tarayıcınızın ayarlarından çerezleri silebilir veya engelleyebilirsiniz. Google reklam kişiselleştirmesini <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Reklam Ayarları</a> sayfasından yönetebilirsiniz.</p>
+<h2>Kişisel veriler</h2><p>Ayrıntılar için <a href="gizlilik.html">Gizlilik ve KVKK Aydınlatma Metni</a>'ni inceleyebilirsiniz.</p>""")
+
+
+def llms(tam=False):
+    cihaz = "\n".join(f"- {b}: {m}" for _, b, m, _ in C.CIHAZLAR)
+    sayfalar = "\n".join(f"- [{b}]({URL}{y})" for y, b in YASAL)
+    tel = C.TEL or "(telefon numarası yakında eklenecek)"
+    t = f"""# {C.FIRMA}
+
+> {C.FIRMA}, beyaz eşya (buzdolabı, çamaşır makinesi, bulaşık makinesi, fırın ve ocak), kombi ve klima için servis kaydı alan, adreste arıza tespiti, onarım ve bakım yapan bağımsız bir özel teknik servistir. Hiçbir üretici markanın yetkili servisi, bayisi veya müşteri hizmetleri hattı değildir.
+
+## İletişim
+- Telefon: {tel}
+- Servis kayıt formu: {URL}#kayit (mesaj WhatsApp'ta hazır açılır)
+- Çalışma: {C.SAAT}
+
+## Hizmetler
+{cihaz}
+
+## Çalışma ilkeleri
+- Ücret, arıza tespitinden sonra ve işlemden önce bildirilir; onay olmadan işlem yapılmaz.
+- Değişen parça açıklanır, çıkan parça istenirse müşteriye bırakılır.
+- İstenirse yazılı servis formu düzenlenir.
+- Garanti kapsamındaki cihazlar için üreticinin yetkili servisine başvurulması önerilir.
+
+## Sayfalar
+- [Ana sayfa]({URL})
+{sayfalar}
+"""
+    if tam:
+        t += "\n## Sık sorulan sorular\n" + "\n".join(f"### {s}\n{c}\n" for s, c in C.SSS)
+        t += "\n## Arıza rehberi\n" + "\n".join(f"### {s}\n{c}\n" for s, c in C.BELIRTILER)
+        t += "\n## Servis süreci\n" + "\n".join(f"{i}. {b}: {m}" for i, (b, m) in enumerate(C.ADIMLAR, 1)) + "\n"
+    return t
+
+
+AI_BOTLAR = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot",
+             "Perplexity-User", "Google-Extended", "Applebot-Extended", "Bingbot", "CCBot", "meta-externalagent"]
+
+
 def bulunamadi():
     return bas(f"Sayfa bulunamadı | {C.FIRMA}", "Aradığınız sayfa bulunamadı.", "404.html", "noindex") + ust(False) + f'''
 <main class="kap dar"><article class="metin" style="text-align:center">
@@ -361,15 +469,22 @@ def main():
     GORSEL.update(gorselleri_hazirla())
     yaz("index.html", ana_sayfa())
     yaz("gizlilik.html", gizlilik())
+    yaz("hakkimizda.html", hakkimizda())
+    yaz("iletisim.html", iletisim())
+    yaz("hizmet-kosullari.html", hizmet_kosullari())
+    yaz("cerez-politikasi.html", cerez())
+    yaz("llms.txt", llms())
+    yaz("llms-full.txt", llms(True))
     yaz("404.html", bulunamadi())
     yaz("tuzak/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Servis kaydı</title>'
         '<script>try{localStorage.setItem("cf_trap","1")}catch(e){}</script><p>Kayıt bulunamadı.</p>\n')
     yaz("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0c3b2e"/>'
         '<path d="M19 6h-8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10z" fill="none" stroke="#e0b13a" stroke-width="2.2" stroke-linejoin="round"/>'
         '<path d="M12.5 16.5l2.5 2.5 4.5-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>\n')
-    yaz("robots.txt", "User-agent: *\nDisallow: /tuzak/\nAllow: /\n" + (f"\nSitemap: {URL}sitemap.xml\n" if YAYINDA else ""))
-    yaz("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        f'<url><loc>{URL}</loc></url><url><loc>{URL}gizlilik.html</loc></url></urlset>\n')
+    yaz("robots.txt", "User-agent: *\nDisallow: /tuzak/\nAllow: /\n\n# Yapay zeka arama ve asistan botları: erişim serbest (tuzak hariç)\n"
+        + "".join(f"User-agent: {b}\n" for b in AI_BOTLAR) + "Disallow: /tuzak/\nAllow: /\n" + f"\nSitemap: {URL}sitemap.xml\n")
+    yaz("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        + "".join(f"<url><loc>{URL}{y}</loc></url>" for y in ["", *[y for y, _ in YASAL]]) + "</urlset>\n")
     yaz("CNAME", C.ALAN.split("//")[-1].strip("/") + "\n")
     yaz(".nojekyll", "")
     print("Sayfalar yazıldı | görsel:", ", ".join(sorted(GORSEL)) or "yok", "|",
