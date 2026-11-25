@@ -57,6 +57,39 @@ def ik(ad):
 GORSEL = {}
 
 
+FILIGRANSIZ = ("hero",)  # hero arka planda koyu katmanın altında; filigran eklenmez
+
+
+def filigran(im):
+    """Sağ alt köşeye yarı saydam logo + alan adı (kurumsal damga)."""
+    from PIL import Image, ImageDraw, ImageFont
+    im = im.convert("RGBA")
+    w, h = im.size
+    boy = max(14, round(w * 0.022))
+    font = None
+    for yol in ("C:/Windows/Fonts/segoeuib.ttf", "C:/Windows/Fonts/arialbd.ttf"):
+        if os.path.exists(yol):
+            font = ImageFont.truetype(yol, boy)
+            break
+    font = font or ImageFont.load_default()
+    yazi = C.ALAN.split("//")[-1].strip("/")
+    kat = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(kat)
+    tw = d.textlength(yazi, font=font)
+    ikon = round(boy * 1.45)
+    pad = round(boy * 0.6)
+    kw, kh = round(ikon + pad * 3 + tw), round(ikon + pad * 1.4)
+    m = round(w * 0.022)
+    x0, y0 = w - kw - m, h - kh - m
+    d.rounded_rectangle((x0, y0, x0 + kw, y0 + kh), radius=kh // 2, fill=(12, 59, 46, 150))
+    ix, iy = x0 + pad, y0 + (kh - ikon) // 2
+    d.rounded_rectangle((ix, iy, ix + ikon, iy + ikon), radius=round(ikon * 0.28), fill=(224, 177, 58, 235))
+    c = ikon / 32
+    d.line([(ix + 9 * c, iy + 16.5 * c), (ix + 14 * c, iy + 21.5 * c), (ix + 23 * c, iy + 11 * c)], fill=(12, 59, 46, 255), width=max(2, round(3.2 * c)), joint="curve")
+    d.text((ix + ikon + pad, y0 + kh / 2), yazi, font=font, fill=(255, 255, 255, 225), anchor="lm")
+    return Image.alpha_composite(im, kat).convert("RGB")
+
+
 def gorselleri_hazirla():
     kaynak = os.path.join(KAYNAK, "gorsel")
     hazir = {}
@@ -73,6 +106,12 @@ def gorselleri_hazirla():
         if uz.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
             continue
         im = Image.open(os.path.join(kaynak, dosya)).convert("RGB")
+        oran = {"hero": None, "og-kapak": None, "kurumsal": 4 / 4.4}.get(ad, 16 / 10)  # CSS kutu oranı: filigran kırpılmasın
+        if oran:
+            if im.width / im.height > oran:
+                yw = round(im.height * oran); x = (im.width - yw) // 2; im = im.crop((x, 0, x + yw, im.height))
+            else:
+                yh = round(im.width / oran); y = (im.height - yh) // 2; im = im.crop((0, y, im.width, y + yh))
         genislikler = [800, 1400] if ad in ("hero", "og-kapak", "kurumsal") else [480, 800]
         boy = []
         for g in genislikler:
@@ -80,7 +119,8 @@ def gorselleri_hazirla():
             h2 = round(im.height * g2 / im.width)
             hedef = os.path.join(KOK, "img", f"{ad}-{g}.webp")
             if not os.path.exists(hedef) or os.path.getmtime(hedef) < os.path.getmtime(os.path.join(kaynak, dosya)):
-                im.resize((g2, h2), Image.LANCZOS).save(hedef, "WEBP", quality=80, method=6)
+                kucuk = im.resize((g2, h2), Image.LANCZOS)
+                (kucuk if ad in FILIGRANSIZ else filigran(kucuk)).save(hedef, "WEBP", quality=80, method=6)
             boy.append((g, g2, h2))
         hazir[ad] = boy
     return hazir
@@ -233,10 +273,10 @@ def ana_sayfa():
     yapi = "".join(f'<li><span class="y-no">{i:02d}</span><div><h3>{ik(k)}{e(b)}</h3><p>{e(m)}</p></div></li>' for i, (k, b, m) in enumerate(C.YAPI, 1))
     hizmet = "".join(
         f'<article class="hizmet"><div class="h-foto">{resim(g, b + " onarımı yapan teknisyen", "(max-width:640px) 92vw, (max-width:1020px) 46vw, 360px") or yer_tutucu(k, b)}'
-        f'<span class="h-ikon">{ik(k)}</span></div>'
+        f'<span class="h-etiket">Servis kaydı · {i:02d}</span><span class="h-ikon">{ik(k)}</span></div>'
         f'<div class="h-ic"><h3>{e(b)} Servisi</h3><p>{e(m)}</p>'
         + (f'<a href="{wa("Merhaba, " + b.lower() + " için servis kaydı oluşturmak istiyorum.")}" target="_blank" rel="noopener" data-olay="whatsapp_tiklama" data-konum="hizmet">Servis kaydı oluştur {ik("ok")}</a>' if WA_NO else f'<a href="#kayit">Servis kaydı oluştur {ik("ok")}</a>')
-        + '</div></article>' for k, b, m, g in C.CIHAZLAR)
+        + '</div></article>' for i, (k, b, m, g) in enumerate(C.CIHAZLAR, 1))
     adim = "".join(f'<li><span class="a-no">{i}</span><h3>{e(b)}</h3><p>{e(m)}</p></li>' for i, (b, m) in enumerate(C.ADIMLAR, 1))
     ilke = "".join(f'<div class="ilke">{ik(k)}<div><h3>{e(b)}</h3><p>{e(m)}</p></div></div>' for k, b, m in C.ILKELER)
     rehber = "".join(f'<details><summary>{e(b)}</summary><p>{e(m)}</p></details>' for b, m in C.BELIRTILER)
