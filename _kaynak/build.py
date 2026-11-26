@@ -60,7 +60,7 @@ GORSEL = {}
 FILIGRANSIZ = ("hero",)  # hero arka planda koyu katmanın altında; filigran eklenmez
 
 
-def filigran(im):
+def filigran(im, ust=False):
     """Sağ alt köşeye yarı saydam logo + alan adı (kurumsal damga)."""
     from PIL import Image, ImageDraw, ImageFont
     im = im.convert("RGBA")
@@ -80,7 +80,7 @@ def filigran(im):
     pad = round(boy * 0.6)
     kw, kh = round(ikon + pad * 3 + tw), round(ikon + pad * 1.4)
     m = round(w * 0.022)
-    x0, y0 = w - kw - m, h - kh - m
+    x0, y0 = w - kw - m, (m if ust else h - kh - m)
     d.rounded_rectangle((x0, y0, x0 + kw, y0 + kh), radius=kh // 2, fill=(12, 59, 46, 150))
     ix, iy = x0 + pad, y0 + (kh - ikon) // 2
     d.rounded_rectangle((ix, iy, ix + ikon, iy + ikon), radius=round(ikon * 0.28), fill=(224, 177, 58, 235))
@@ -120,7 +120,7 @@ def gorselleri_hazirla():
             hedef = os.path.join(KOK, "img", f"{ad}-{g}.webp")
             if not os.path.exists(hedef) or os.path.getmtime(hedef) < os.path.getmtime(os.path.join(kaynak, dosya)):
                 kucuk = im.resize((g2, h2), Image.LANCZOS)
-                (kucuk if ad in FILIGRANSIZ else filigran(kucuk)).save(hedef, "WEBP", quality=80, method=6)
+                (kucuk if ad in FILIGRANSIZ else filigran(kucuk, ust=ad not in ("kurumsal", "og-kapak"))).save(hedef, "WEBP", quality=80, method=6)
             boy.append((g, g2, h2))
         hazir[ad] = boy
     return hazir
@@ -130,10 +130,11 @@ def resim(ad, alt, sizes, oncelik=False):
     if ad not in GORSEL:
         return ""
     boy = GORSEL[ad]
-    srcset = ", ".join(f"img/{ad}-{g}.webp {g2}w" for g, g2, _ in boy)
+    v = lambda g: int(os.path.getmtime(os.path.join(KOK, "img", f"{ad}-{g}.webp")))  # önbellek kırıcı
+    srcset = ", ".join(f"img/{ad}-{g}.webp?v={v(g)} {g2}w" for g, g2, _ in boy)
     _, w0, h0 = boy[0]
     yuk = 'fetchpriority="high"' if oncelik else 'loading="lazy" decoding="async"'
-    return f'<img src="img/{ad}-{boy[0][0]}.webp" srcset="{srcset}" sizes="{sizes}" width="{w0}" height="{h0}" alt="{e(alt)}" {yuk}>'
+    return f'<img src="img/{ad}-{boy[0][0]}.webp?v={v(boy[0][0])}" srcset="{srcset}" sizes="{sizes}" width="{w0}" height="{h0}" alt="{e(alt)}" {yuk}>'
 
 
 def yer_tutucu(ikon, yazi):
